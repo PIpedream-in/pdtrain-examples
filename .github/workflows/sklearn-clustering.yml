@@ -16,7 +16,7 @@ jobs:
 
       - name: Upload dataset
         id: dataset
-        uses: PIpedream-in/upload-dataset@v1
+        uses: PIpedream-in/upload-dataset-action@v1
         with:
           api-key: ${{ secrets.PDTRAIN_API_KEY }}
           api-url: https://6c68b9fad00b.ngrok-free.app
@@ -26,7 +26,7 @@ jobs:
 
       - name: Run K-Means Clustering
         id: train
-        uses: PIpedream-in/train-ml@v1
+        uses: PIpedream-in/train-ml-action@v1
         with:
           api-key: ${{ secrets.PDTRAIN_API_KEY }}
           code-path: ./sklearn-clustering-simple

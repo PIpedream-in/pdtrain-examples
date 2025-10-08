@@ -16,7 +16,7 @@ jobs:
 
       - name: Upload dataset
         id: dataset
-        uses: PIpedream-in/upload-dataset@v1
+        uses: PIpedream-in/upload-dataset-action@v1
         with:
           api-key: ${{ secrets.PDTRAIN_API_KEY }}
           api-url: https://6c68b9fad00b.ngrok-free.app
@@ -26,13 +26,16 @@ jobs:
 
       - name: Train PyTorch Model
         id: train
-        uses: PIpedream-in/train-ml@v1
+        uses: PIpedream-in/train-ml-action@v1
         with:
           api-key: ${{ secrets.PDTRAIN_API_KEY }}
+          api-url: https://6c68b9fad00b.ngrok-free.app
           code-path: ./pytorch-script-minimal
           entry-point: train.py
           dataset: ${{ steps.dataset.outputs.dataset-id }}
+          exclude-patterns: data/
           framework: pytorch
+          download-artifacts: false
           framework-version: 2.2.0
           python-version: py310
           hyperparameters: |

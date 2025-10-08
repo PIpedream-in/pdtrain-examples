@@ -45,3 +45,5 @@ Thumbs.db
 # Temporary
 *.tmp
 *.bak
+.secrets
+ACT.md
