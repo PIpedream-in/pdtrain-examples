@@ -22,6 +22,7 @@ jobs:
         uses: PIpedream-in/upload-dataset@v1
         with:
           api-key: ${{ secrets.PDTRAIN_API_KEY }}
+          api-url: https://6c68b9fad00b.ngrok-free.app
           path: ./docker-custom-simple/data
           name: docker-custom-data-${{ github.run_number }}
           description: Docker mode training dataset
@@ -46,10 +47,3 @@ jobs:
           echo "- **Status:** ${{ steps.train.outputs.status }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Cost:** \$${{ steps.train.outputs.cost }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Runtime:** ${{ steps.train.outputs.runtime-seconds }}s" >> $GITHUB_STEP_SUMMARY
-
-      - name: Upload artifacts
-        if: steps.train.outputs.status == 'completed'
-        uses: actions/upload-artifact@v4
-        with:
-          name: docker-model-${{ github.run_number }}
-          path: ${{ steps.train.outputs.artifacts-path }}
