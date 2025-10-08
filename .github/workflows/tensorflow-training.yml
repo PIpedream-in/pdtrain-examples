@@ -19,7 +19,7 @@ jobs:
         uses: PIpedream-in/upload-dataset-action@v1
         with:
           api-key: ${{ secrets.PDTRAIN_API_KEY }}
-          api-url: https://6c68b9fad00b.ngrok-free.app
+          api-url: https://ml-orchestrator.pipedream.in
           path: ./tensorflow-regression-simple/data
           name: tensorflow-data-${{ github.run_number }}
           description: TensorFlow regression dataset
@@ -29,14 +29,14 @@ jobs:
         uses: PIpedream-in/train-ml-action@v1
         with:
           api-key: ${{ secrets.PDTRAIN_API_KEY }}
-          api-url: https://6c68b9fad00b.ngrok-free.app
+          api-url: https://ml-orchestrator.pipedream.in
           code-path: ./tensorflow-regression-simple
           entry-point: train.py
           dataset: ${{ steps.dataset.outputs.dataset-id }}
           framework: tensorflow
           framework-version: 2.13.0
           download-artifacts: false
-          exclude-patterns: data/
+          exclude-patterns: data
           python-version: py310
           hyperparameters: |
             epochs: 3
