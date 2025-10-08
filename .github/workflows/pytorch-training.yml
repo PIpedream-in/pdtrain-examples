@@ -33,9 +33,9 @@ jobs:
           code-path: ./pytorch-script-minimal
           entry-point: train.py
           dataset: ${{ steps.dataset.outputs.dataset-id }}
-          exclude-patterns: data/
           framework: pytorch
           download-artifacts: false
+          exclude-patterns: data/
           framework-version: 2.2.0
           python-version: py310
           hyperparameters: |

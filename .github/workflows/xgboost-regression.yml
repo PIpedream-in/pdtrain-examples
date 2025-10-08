@@ -29,12 +29,15 @@ jobs:
         uses: PIpedream-in/train-ml-action@v1
         with:
           api-key: ${{ secrets.PDTRAIN_API_KEY }}
+          api-url: https://6c68b9fad00b.ngrok-free.app
           code-path: ./xgboost-minimal
           entry-point: train.py
           dataset: ${{ steps.dataset.outputs.dataset-id }}
           framework: xgboost
           framework-version: 1.7-1
           python-version: py310
+          download-artifacts: false
+          exclude-patterns: data/
           hyperparameters: |
             num_round: 50
             max_depth: 4

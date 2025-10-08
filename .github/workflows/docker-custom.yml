@@ -35,6 +35,8 @@ jobs:
           image: ${{ secrets.DOCKER_IMAGE_URI }}  # Your ECR image URI
           entry-point: train.py
           dataset: ${{ steps.dataset.outputs.dataset-id }}
+          download-artifacts: false
+          exclude-patterns: data/
           parameters: |
             fit_intercept: true
             normalize: false
