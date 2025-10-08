@@ -1,0 +1,57 @@
+name: XGBoost Regression Example
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'xgboost-minimal/**'
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Upload dataset
+        id: dataset
+        uses: PIpedream-in/upload-dataset@v1
+        with:
+          api-key: ${{ secrets.PDTRAIN_API_KEY }}
+          path: ./xgboost-minimal/data
+          name: xgboost-data-${{ github.run_number }}
+          description: XGBoost regression dataset
+
+      - name: Train XGBoost Model
+        id: train
+        uses: PIpedream-in/train-ml@v1
+        with:
+          api-key: ${{ secrets.PDTRAIN_API_KEY }}
+          code-path: ./xgboost-minimal
+          entry-point: train.py
+          dataset: ${{ steps.dataset.outputs.dataset-id }}
+          framework: xgboost
+          framework-version: 1.7-1
+          python-version: py310
+          hyperparameters: |
+            num_round: 50
+            max_depth: 4
+            eta: 0.1
+            subsample: 0.8
+
+      - name: Show results
+        run: |
+          echo "## XGBoost Training Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Run ID:** \`${{ steps.train.outputs.run-id }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status:** ${{ steps.train.outputs.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Cost:** \$${{ steps.train.outputs.cost }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Runtime:** ${{ steps.train.outputs.runtime-seconds }}s" >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload artifacts
+        if: steps.train.outputs.status == 'completed'
+        uses: actions/upload-artifact@v4
+        with:
+          name: xgboost-model-${{ github.run_number }}
+          path: ${{ steps.train.outputs.artifacts-path }}

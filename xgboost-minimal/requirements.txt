@@ -1,0 +1,3 @@
+# Use only what we need; rely on the framework image for low-level stacks
+# pandas and xgboost are already included in the SageMaker XGBoost container
+# Only add additional dependencies here if needed

@@ -1,0 +1,4 @@
+# Rely on the SageMaker TensorFlow framework image for TensorFlow itself.
+# Install only user-space deps that are compatible with the image's NumPy.
+# Pandas >=2.2.3 includes NumPy 2.x compatibility to avoid binary mismatch errors.
+pandas>=2.2.3

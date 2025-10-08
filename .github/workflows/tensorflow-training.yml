@@ -1,0 +1,56 @@
+name: TensorFlow Training Example
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'tensorflow-regression-simple/**'
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Upload dataset
+        id: dataset
+        uses: PIpedream-in/upload-dataset@v1
+        with:
+          api-key: ${{ secrets.PDTRAIN_API_KEY }}
+          path: ./tensorflow-regression-simple/data
+          name: tensorflow-data-${{ github.run_number }}
+          description: TensorFlow regression dataset
+
+      - name: Train TensorFlow Model
+        id: train
+        uses: PIpedream-in/train-ml@v1
+        with:
+          api-key: ${{ secrets.PDTRAIN_API_KEY }}
+          code-path: ./tensorflow-regression-simple
+          entry-point: train.py
+          dataset: ${{ steps.dataset.outputs.dataset-id }}
+          framework: tensorflow
+          framework-version: 2.13.0
+          python-version: py310
+          hyperparameters: |
+            epochs: 3
+            batch_size: 32
+            learning_rate: 0.001
+
+      - name: Show results
+        run: |
+          echo "## TensorFlow Training Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Run ID:** \`${{ steps.train.outputs.run-id }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status:** ${{ steps.train.outputs.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Cost:** \$${{ steps.train.outputs.cost }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Runtime:** ${{ steps.train.outputs.runtime-seconds }}s" >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload artifacts
+        if: steps.train.outputs.status == 'completed'
+        uses: actions/upload-artifact@v4
+        with:
+          name: tensorflow-model-${{ github.run_number }}
+          path: ${{ steps.train.outputs.artifacts-path }}
