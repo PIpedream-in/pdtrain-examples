@@ -10,7 +10,7 @@ A minimal custom Docker container training example for SageMaker via pdtrain. Us
 ## Build and Test Locally
 
 ```bash
-cd orchestrator-api/examples/docker-custom-simple
+cd docker-custom-simple
 
 # Build image
 docker build -t docker-custom-simple .
@@ -26,26 +26,21 @@ docker run --rm -v $(pwd)/data:/opt/ml/input/data/dataset -v $(pwd)/output:/opt/
 ## Push to ECR (example)
 
 ```bash
-AWS_ACC=123456789012
-REGION=us-east-1
-REPO=docker-custom-simple
 
-docker tag docker-custom-simple:latest $AWS_ACC.dkr.ecr.$REGION.amazonaws.com/$REPO:latest
-aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $AWS_ACC.dkr.ecr.$REGION.amazonaws.com
-docker push $AWS_ACC.dkr.ecr.$REGION.amazonaws.com/$REPO:latest
+docker tag docker-custom-simple:latest <your-public-dockerhub-username>/docker-custom-simple:latest
+docker push <your-public-dockerhub-username>/docker-custom-simple:latest
 ```
 
 ## Run with pdtrain (Docker Mode)
 
 ```bash
 # Install and configure CLI
-cd /Users/anish/git/codex-api/pdtrain
-pip install -e .
+pip install pdtrain
 pdtrain configure
 
 # Create run using custom image (no bundle needed)
 pdtrain run create \
-  --image <ecr-uri>/docker-custom-simple:latest \
+  --image <your-public-dockerhub-username>/docker-custom-simple:latest \
   --entry train.py \
   --param fit_intercept=true \
   --param normalize=false \

@@ -18,7 +18,7 @@ pip install -r requirements.txt
 
 # Use example test data from the repo
 python train.py \
-  --data_dir ../test_data \
+  --data_dir ./data \
   --model_dir ./output \
   --epochs 2 \
   --batch_size 16
@@ -28,12 +28,11 @@ python train.py \
 
 ```bash
 # 1) Install and configure CLI (one time)
-cd /Users/anish/git/codex-api/pdtrain
-pip install -e .
+pip install pdtrain
 pdtrain configure
 
 # 2) Upload bundle (this example directory)
-cd /Users/anish/git/codex-api/orchestrator-api/examples/pytorch-script-minimal
+cd pytorch-script-minimal
 pdtrain bundle upload . --name "pytorch-script-minimal" \
   --exclude "data" \
   --exclude "test_data" \
@@ -41,7 +40,7 @@ pdtrain bundle upload . --name "pytorch-script-minimal" \
 
 # 3) Upload dataset (use provided test images)
 # Note: Keep test data out of the code bundle; upload as a dataset.
-pdtrain dataset upload ../test_data --name "script-minimal-data" --wait
+pdtrain dataset upload ./data --name "script-minimal-data" --wait
 
 # 4) Create run (framework mode)
 # Copy IDs from `pdtrain bundle list` and `pdtrain dataset list`

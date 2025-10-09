@@ -10,7 +10,7 @@ A minimal XGBoost training example for SageMaker Script Mode via pdtrain. It tra
 ## Local Run
 
 ```bash
-cd orchestrator-api/examples/xgboost-minimal
+cd xgboost-minimal
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 python train.py --data_dir ./data --model_dir ./output --num_round 50 --max_depth 4 --eta 0.1
@@ -22,12 +22,11 @@ Note (macOS): XGBoost CPU wheels use OpenMP. If you see an error about `libomp.d
 
 ```bash
 # Install and configure CLI (once)
-cd /Users/anish/git/codex-api/pdtrain
-pip install -e .
+pip install pdtrain
 pdtrain configure
 
 # Upload bundle (exclude local data from code bundle)
-cd /Users/anish/git/codex-api/orchestrator-api/examples/xgboost-minimal
+cd xgboost-minimal
 pdtrain bundle upload . --name "xgboost-minimal" \
   --exclude "data" \
   --wait

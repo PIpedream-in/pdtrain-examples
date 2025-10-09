@@ -10,7 +10,7 @@ A minimal TensorFlow Keras regression example for SageMaker Script Mode via pdtr
 ## Local Run
 
 ```bash
-cd orchestrator-api/examples/tensorflow-regression-simple
+cd tensorflow-regression-simple
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 python train.py --data_dir ./data --model_dir ./output --epochs 3 --batch_size 32
@@ -20,12 +20,11 @@ python train.py --data_dir ./data --model_dir ./output --epochs 3 --batch_size 3
 
 ```bash
 # Install and configure CLI (once)
-cd /Users/anish/git/codex-api/pdtrain
-pip install -e .
+pip install pdtrain
 pdtrain configure
 
 # Upload bundle (exclude local data from code bundle)
-cd /Users/anish/git/codex-api/orchestrator-api/examples/tensorflow-regression-simple
+cd tensorflow-regression-simple
 pdtrain bundle upload . --name "tf-regression-simple" \
   --exclude "data" \
   --wait
